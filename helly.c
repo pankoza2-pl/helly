@@ -5,7 +5,7 @@ int randy() { return n = r, n ^= 0x8ebf635bee3c6d25, n ^= n << 5 | n >> 26, n *=
 DWORD
 WINAPI
 helly1(
-
+   LPVOID lpParam
 ) {
 	HDC hdcScreen = GetDC(0);
 	int w = GetSystemMetrics(0), h = GetSystemMetrics(1);
@@ -18,7 +18,7 @@ helly1(
 DWORD
 WINAPI
 helly2(
-
+   LPVOID lpParam
 ) {
 	int tymez = GetTickCount();
 	int w = GetSystemMetrics(0), h = GetSystemMetrics(1);
