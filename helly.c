@@ -1,6 +1,6 @@
 #include <windows.h>
 static ULONGLONG r, n;
-int randy() { return n = r, n ^= 0x8ebf635bee3c6d25, n ^= n << 5 | n >> 26, n *= 0xf3e05ca5c43e376b, r = n, n & 0x7fffffff;}
+INT randy() { return n = r, n ^= 0x8ebf635bee3c6d25, n ^= n << 5 | n >> 26, n *= 0xf3e05ca5c43e376b, r = n, n & 0x7fffffff;}
 
 DWORD
 WINAPI
@@ -8,9 +8,9 @@ helly1(
    LPVOID lpParam
 ) {
 	HDC hdcScreen = GetDC(0);
-	int w = GetSystemMetrics(0), h = GetSystemMetrics(1);
-	for (int i = 0;; i++) {
-		int(a) = randy() % w, b = randy() % h;
+	INT w = GetSystemMetrics(0), h = GetSystemMetrics(1);
+	for (INT i = 0;; i++) {
+		INT(a) = randy() % w, b = randy() % h;
 		BitBlt(hdcScreen, a, b, 200, 200, hdcScreen, a + randy() % 21 - 10, b + randy() % 21 - 10, !(randy() & 3) ? 0xEE0086 : 0xCC0020);
 	}
 }
