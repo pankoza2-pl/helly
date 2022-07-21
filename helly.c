@@ -20,26 +20,28 @@ WINAPI
 helly2(
    LPVOID lpParam
 ) {
-	int tymez = GetTickCount();
-	int w = GetSystemMetrics(0), h = GetSystemMetrics(1);
-	RGBQUAD* pRGBQUAD = (RGBQUAD*)VirtualAlloc(0, (w * h + w) * sizeof(RGBQUAD), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-	for (int i = 0;; i++, i %= 3) {
+	INT nTicks = GetTickCount();
+	INT w = GetSystemMetrics(0), h = GetSystemMetrics(1);
+	RGBQUAD* rgbData = (RGBQUAD*)VirtualAlloc(NULL, (w * h + w) * sizeof(RGBQUAD), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	for (INT i = 0;; i++, i %= 3) {
 		if (!1)RedrawWindow(0, 0, 0, 133);
-		HDC hdcSource = GetDC(0), hdcScreen = CreateCompatibleDC(hdcSource); HBITMAP hBitmapData = CreateBitmap(w, h, 1, 32, pRGBQUAD);
-		SelectObject(hdcScreen, hBitmapData);
-		BitBlt(hdcScreen, 0, 0, w, h, hdcSource, 0, 0, 0x330008); GetBitmapBits(hBitmapData, w * h * 4, pRGBQUAD);
-		int Vortex = 0;
-		BYTE hByteData = 0;
-		if ((GetTickCount() - tymez) > 60000)
-			hByteData = randy() & 0xff;
-		for (int i = 0; w * h > i; i++) {
+		HDC hdcScreen = GetDC(0), hdcMem = CreateCompatibleDC(hdcScreen); 
+		HBITMAP hbm = CreateBitmap(w, h, 1, 32, rgbData);
+		SelectObject(hdcMem, hbm);
+		BitBlt(hdcMem, 0, 0, w, h, hdcScreen, 0, 0, 0x330008);
+		GetBitmapBits(hbm, w * h * 4, rgbData);
+		INT nVortex = 0;
+		BYTE rgbBits = 0;
+		if ((GetTickCount() - nTicks) > 60000)
+			rgbBits = randy() & 0xFF;
+		for (INT i = 0; w * h > i; i++) {
 			if (i % h == 0 && randy() % 100 == 0)
-				Vortex = randy() % 50;
-			((BYTE*)(pRGBQUAD + i))[Vortex % 3] += ((BYTE*)(pRGBQUAD + i + Vortex))[Vortex] ^ hByteData;
+				nVortex = randy() % 50;
+			((BYTE*)(rgbData + i))[nVortex % 3] += ((BYTE*)(rgbData + i + nVortex))[nVortex] ^ rgbBits;
 		}
-		SetBitmapBits(hBitmapData, w * h * 4, pRGBQUAD); BitBlt(hdcSource, randy() % 3 - 1, randy() % 3 - 1, w, h, hdcScreen, 0, 0, 0xCC0020);
-		DeleteObject(hBitmapData); DeleteObject(hdcScreen);
-		DeleteObject(hdcSource);
+		SetBitmapBits(hbm, w * h * 4, rgbData);
+		BitBlt(hdcScreen, randy() % 3 - 1, randy() % 3 - 1, w, h, hdcMem, 0, 0, 0xCC0020);
+		DeleteObject(hbm); DeleteObject(hdcMem);DeleteObject(hdcScreen);
 	}
 }
 
